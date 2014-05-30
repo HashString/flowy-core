@@ -1,6 +1,9 @@
 package com.flowy.core.models;
 
-public class Workflow {
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
+public class Workflow implements IMongoDBObject{
 
     private Long id;
     private String name;
@@ -15,5 +18,26 @@ public class Workflow {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Item getManages() {
+        return manages;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public DBObject getDBObject() {
+        BasicDBObject basicDBObject = new BasicDBObject()
+                .append("name", this.getName())
+                .append("description", this.getDescription())
+                .append("manages", this.getManages().getDBObject());
+        return basicDBObject;
     }
 }

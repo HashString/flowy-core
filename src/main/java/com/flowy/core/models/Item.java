@@ -1,7 +1,11 @@
 package com.flowy.core.models;
 
-/**
- * Created by ssinghal on 27/5/14.
- */
-public class Item {
+import com.mongodb.DBObject;
+
+public class Item implements IMongoDBObject {
+
+    @Override
+    public DBObject getDBObject() {
+        return null;
+    }
 }

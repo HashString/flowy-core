@@ -1,7 +1,6 @@
 package com.flowy.core.repos;
 
 import com.flowy.core.models.Workflow;
-import com.flowy.core.models.dbObjects.WorkflowModel;
 import com.flowy.core.util.ConnectionFactory;
 import com.mongodb.DBObject;
 
@@ -17,7 +16,6 @@ public class MongoWorkflowRepository implements IWorkflowRepository {
 
     @Override
     public Long save(Workflow workflow) throws UnknownHostException {
-        DBObject workflowObject = new WorkflowModel(workflow).getDBObject();
-        return connectionFactory.getCollection("dbName", "collectionName").save(workflowObject).getN() > 0 ? workflow.getId() : null;
+        return connectionFactory.getCollection("dbName", "collectionName").save(workflow.getDBObject()).getN() > 0 ? workflow.getId() : null;
     }
 }
