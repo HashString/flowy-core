@@ -3,6 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.Item;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.net.UnknownHostException;
@@ -14,9 +15,14 @@ import static org.mockito.Mockito.*;
 
 public class WorkflowServiceSpecs {
 
+    private IWorkflowRepository mockRepo;
+    private WorkflowService workflowService;
 
-    private IWorkflowRepository mockRepo = mock(IWorkflowRepository.class);
-    private WorkflowService workflowService = new WorkflowService(mockRepo);
+    @Before
+    public void setUp() throws Exception {
+        mockRepo = mock(IWorkflowRepository.class);
+        workflowService = new WorkflowService(mockRepo);
+    }
 
     @Test
     public void itShouldCreateAWorkflow() throws UnknownHostException {
