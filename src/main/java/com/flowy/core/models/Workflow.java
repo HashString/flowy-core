@@ -2,7 +2,7 @@ package com.flowy.core.models;
 
 public class Workflow {
 
-    private String id;
+    private Long id;
     private String name;
     private Item manages;
     private String description;
@@ -13,7 +13,7 @@ public class Workflow {
         this.description = description;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 }

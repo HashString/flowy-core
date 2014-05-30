@@ -3,8 +3,9 @@ package com.flowy.core.services;
 import com.flowy.core.models.Item;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
-import com.flowy.core.service.WorkflowService;
 import org.junit.Test;
+
+import java.net.UnknownHostException;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
@@ -18,7 +19,7 @@ public class WorkflowServiceSpecs {
     private WorkflowService workflowService = new WorkflowService(mockRepo);
 
     @Test
-    public void itShouldCreateAWorkflow() {
+    public void itShouldCreateAWorkflow() throws UnknownHostException {
         //Given
         String name = "Test Workflow";
         Item manages = new Item();
@@ -31,7 +32,7 @@ public class WorkflowServiceSpecs {
     }
 
     @Test
-    public void itShouldReturnNullIfCannotCreateAWorkflow() {
+    public void itShouldReturnNullIfCannotCreateAWorkflow() throws UnknownHostException {
         //Given
         String name = "Test Workflow";
         Item manages = new Item();
