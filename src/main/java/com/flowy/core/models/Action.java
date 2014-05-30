@@ -8,6 +8,7 @@ public class Action implements IMongoDBObject {
     private Long id;
     private String name;
     private String description;
+    private State startState;
 
     public Action(String name, String description) {
         this.name = name;
@@ -22,16 +23,12 @@ public class Action implements IMongoDBObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public State getStartState() {
+        return startState;
     }
 
     @Override
@@ -39,6 +36,7 @@ public class Action implements IMongoDBObject {
         return new BasicDBObject()
                 .append("id", getId())
                 .append("name", getName())
+                .append("startState", getStartState().getDBObject())
                 .append("description", getDescription());
     }
 }

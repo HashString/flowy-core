@@ -1,21 +1,21 @@
 package com.flowy.core.repos;
 
-import com.flowy.core.models.Workflow;
 import com.flowy.core.util.ConnectionFactory;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
 public class MongoWorkflowRepository implements IWorkflowRepository {
 
-    ConnectionFactory connectionFactory;
+    private final DBCollection workflowCollection;
 
     public MongoWorkflowRepository(ConnectionFactory connectionFactory) throws UnknownHostException {
-        this.connectionFactory = connectionFactory;
+        workflowCollection = connectionFactory.getCollection(DB_NAME, COLLECTION_NAME);
     }
 
     @Override
-    public Long save(Workflow workflow) throws UnknownHostException {
-        return connectionFactory.getCollection("dbName", "collectionName").save(workflow.getDBObject()).getN() > 0 ? workflow.getId() : null;
+    public Long save(DBObject workflowDbObject) throws UnknownHostException {
+        return workflowCollection.save(workflowDbObject).getN() > 0 ? (Long) workflowDbObject.get("id") : null;
     }
 }

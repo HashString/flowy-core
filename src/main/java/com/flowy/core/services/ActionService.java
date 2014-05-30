@@ -13,9 +13,9 @@ public class ActionService {
         this.actionRepository = actionRepository;
     }
 
-    public Long create(Action action) {
+    public Action save(Action action) {
         try {
-            return actionRepository.save(action.getDBObject());
+            return actionRepository.save(action.getDBObject()) == null ? null : action;
         } catch (UnknownHostException e) {
             e.printStackTrace();
             return null;

@@ -1,8 +1,8 @@
 package com.flowy.core.services;
 
-import com.flowy.core.models.Item;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
+import com.mongodb.DBObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,44 +10,50 @@ import java.net.UnknownHostException;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class WorkflowServiceSpecs {
 
-    private IWorkflowRepository mockRepo;
+    private Workflow workflow;
+    private DBObject workflowDbObject;
+    private IWorkflowRepository workflowRepository;
     private WorkflowService workflowService;
 
     @Before
     public void setUp() throws Exception {
-        mockRepo = mock(IWorkflowRepository.class);
-        workflowService = new WorkflowService(mockRepo);
+        workflow = mock(Workflow.class);
+        workflowDbObject = mock(DBObject.class);
+        workflowRepository = mock(IWorkflowRepository.class);
+        workflowService = new WorkflowService(workflowRepository);
     }
 
     @Test
-    public void itShouldCreateAWorkflow() throws UnknownHostException {
+    public void itShouldSaveAWorkflow() throws UnknownHostException {
         //Given
-        String name = "Test Workflow";
-        Item manages = new Item();
-        String description = "some desc";
-        when(mockRepo.save(any(Workflow.class))).thenReturn(Long.valueOf(1));
+        when(workflow.getDBObject()).thenReturn(workflowDbObject);
+        when(workflowRepository.save(workflowDbObject)).thenReturn(Long.valueOf(1));
+
         //When
-        Workflow workflow = workflowService.create(name, manages, description);
+        Workflow savedWorkflow = workflowService.save(workflow);
+
         //Then
-        assertNotNull(workflow);
+        assertNotNull(savedWorkflow);
+        verify(workflow).getDBObject();
+        verify(workflowRepository).save(workflowDbObject);
     }
 
     @Test
-    public void itShouldReturnNullIfCannotCreateAWorkflow() throws UnknownHostException {
+    public void itShouldReturnNullIfCannotSaveAWorkflow() throws UnknownHostException {
         //Given
-        String name = "Test Workflow";
-        Item manages = new Item();
-        String description = "some desc";
-        when(mockRepo.save(any(Workflow.class))).thenReturn(null);
+        when(workflow.getDBObject()).thenReturn(workflowDbObject);
+        when(workflowRepository.save(workflowDbObject)).thenReturn(null);
+
         //When
-        Workflow workflow = workflowService.create(name, manages, description);
+        Workflow savedWorkflow = workflowService.save(workflow);
+
         //Then
-        assertNull(workflow);
-        verify(mockRepo).save(any(Workflow.class));
+        assertNull(savedWorkflow);
+        verify(workflow).getDBObject();
+        verify(workflowRepository).save(workflowDbObject);
     }
 }

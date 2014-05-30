@@ -1,6 +1,5 @@
 package com.flowy.core.services;
 
-import com.flowy.core.models.Item;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
 
@@ -14,9 +13,12 @@ public class WorkflowService {
         this.workflowRepository = workflowRepository;
     }
 
-    public Workflow create(String name, Item manages, String description) throws UnknownHostException {
-        Workflow workflow = new Workflow(name, manages, description);
-        Long workflowId = workflowRepository.save(workflow);
-        return workflowId == null ? null : workflow;
+    public Workflow save(Workflow workflow) {
+        try {
+            return workflowRepository.save(workflow.getDBObject()) == null ? null : workflow;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

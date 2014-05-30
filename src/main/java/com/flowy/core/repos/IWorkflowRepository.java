@@ -1,10 +1,13 @@
 package com.flowy.core.repos;
 
-import com.flowy.core.models.Workflow;
+import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
 public interface IWorkflowRepository {
 
-    public Long save(Workflow workflow) throws UnknownHostException;
+    public static final String DB_NAME = "someDb";
+    public static final String COLLECTION_NAME = "someCollection";
+
+    public Long save(DBObject workflowDbObject) throws UnknownHostException;
 }

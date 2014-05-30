@@ -26,7 +26,7 @@ public class ActionServiceSpecs {
     }
 
     @Test
-    public void itShouldCreateAnAction() throws UnknownHostException {
+    public void itShouldSaveAnAction() throws UnknownHostException {
         //Given
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);
@@ -34,16 +34,16 @@ public class ActionServiceSpecs {
         when(mockRepository.save(mockDBObject)).thenReturn(Long.valueOf(1));
 
         //When
-        Long id = actionService.create(action);
+        Action savedAction = actionService.save(action);
 
         //Then
-        assertNotNull(id);
+        assertNotNull(savedAction);
         verify(action).getDBObject();
         verify(mockRepository).save(mockDBObject);
     }
 
     @Test
-    public void itShouldReturnNullIfItCannotCreateAnAction() throws UnknownHostException {
+    public void itShouldReturnNullIfItCannotSaveAnAction() throws UnknownHostException {
         //Given
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);
@@ -51,10 +51,10 @@ public class ActionServiceSpecs {
         when(mockRepository.save(mockDBObject)).thenReturn(null);
 
         //When
-        Long id = actionService.create(action);
+        Action savedAction = actionService.save(action);
 
         //Then
-        assertNull(id);
+        assertNull(savedAction);
         verify(action).getDBObject();
         verify(mockRepository).save(mockDBObject);
     }
