@@ -11,9 +11,9 @@ public class StateService {
         this.stateRepository = stateRepository;
     }
 
-    public Long create(String name, Integer position, String description) {
+    public State create(String name, Integer position, String description) {
         State state = new State(name, position, description);
         Long stateID = stateRepository.save(state);
-        return stateID;
+        return stateID == null ? null : state;
     }
 }
