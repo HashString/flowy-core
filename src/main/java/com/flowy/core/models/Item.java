@@ -2,10 +2,8 @@ package com.flowy.core.models;
 
 import com.mongodb.DBObject;
 
-public class Item implements IMongoDBObject {
+public interface Item extends IMongoDBObject {
 
     @Override
-    public DBObject getDBObject() {
-        return null;
-    }
+    public DBObject getDBObject();
 }
