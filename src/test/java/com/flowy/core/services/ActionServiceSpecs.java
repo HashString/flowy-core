@@ -14,9 +14,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Created by ssinghal
+ * Created on 30-May-2014
+ * If you refactor this code, remember: Code so clean you could eat off it!
+ */
 public class ActionServiceSpecs {
 
-    private ActionService actionService;
+    private IActionService actionService;
     private IActionRepository mockRepository;
 
     @Before

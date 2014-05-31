@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class StateServiceSpecs {
 
     IStateRepository mockStateRepository;
-    private StateService stateService;
+    private IStateService stateService;
 
     @Before
     public void setUp(){

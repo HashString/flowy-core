@@ -6,6 +6,11 @@ import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
+/**
+ * Created by ssinghal
+ * Created on 30-May-2014
+ * If you refactor this code, remember: Code so clean you could eat off it!
+ */
 public class MongoActionRepository implements IActionRepository {
 
     private final DBCollection actionsCollection;

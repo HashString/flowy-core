@@ -5,7 +5,12 @@ import com.flowy.core.repos.IWorkflowRepository;
 
 import java.net.UnknownHostException;
 
-public class WorkflowService {
+/**
+ * Created by ssinghal
+ * Created on 29-May-2014
+ * If you refactor this code, remember: Code so clean you could eat off it!
+ */
+public class WorkflowService implements IWorkflowService {
 
     private IWorkflowRepository workflowRepository;
 
@@ -13,6 +18,7 @@ public class WorkflowService {
         this.workflowRepository = workflowRepository;
     }
 
+    @Override
     public Workflow save(Workflow workflow) {
         try {
             return workflowRepository.save(workflow.getDBObject()) == null ? null : workflow;

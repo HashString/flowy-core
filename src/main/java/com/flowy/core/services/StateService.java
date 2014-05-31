@@ -3,7 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
 
-public class StateService {
+public class StateService implements IStateService {
 
     private IStateRepository stateRepository;
 
@@ -11,6 +11,7 @@ public class StateService {
         this.stateRepository = stateRepository;
     }
 
+    @Override
     public State create(String name, Integer position, String description) {
         State state = new State(name, position, description);
         Long stateID = stateRepository.save(state);

@@ -12,12 +12,17 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
+/**
+ * Created by ssinghal
+ * Created on 29-May-2014
+ * If you refactor this code, remember: Code so clean you could eat off it!
+ */
 public class WorkflowServiceSpecs {
 
     private Workflow workflow;
     private DBObject workflowDbObject;
     private IWorkflowRepository workflowRepository;
-    private WorkflowService workflowService;
+    private IWorkflowService workflowService;
 
     @Before
     public void setUp() throws Exception {

@@ -5,7 +5,12 @@ import com.flowy.core.repos.IActionRepository;
 
 import java.net.UnknownHostException;
 
-public class ActionService {
+/**
+ * Created by ssinghal
+ * Created on 30-May-2014
+ * If you refactor this code, remember: Code so clean you could eat off it!
+ */
+public class ActionService implements IActionService {
 
     private IActionRepository actionRepository;
 
@@ -13,6 +18,7 @@ public class ActionService {
         this.actionRepository = actionRepository;
     }
 
+    @Override
     public Action save(Action action) {
         try {
             return actionRepository.save(action.getDBObject()) == null ? null : action;
