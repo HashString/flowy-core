@@ -42,7 +42,7 @@ public class MongoStateRepositorySpecs {
         when(stateDBObject.get("id")).thenReturn(Long.valueOf(1));
 
         //when
-        Long savedStateID = stateRepository.save(stateDBObject);
+        Long savedStateID = stateRepository.saveOrUpdate(stateDBObject);
 
         //then
         assertNotNull(savedStateID);
@@ -58,7 +58,7 @@ public class MongoStateRepositorySpecs {
         when(writeResult.getN()).thenReturn(0);
 
         //when
-        Long savedStateID = stateRepository.save(stateDBObject);
+        Long savedStateID = stateRepository.saveOrUpdate(stateDBObject);
 
         //then
         assertNull(savedStateID);;

@@ -5,14 +5,12 @@ import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
 import com.mongodb.DBObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
@@ -33,35 +31,49 @@ public class StateServiceSpecs {
     }
 
     @Test
-    public void itShouldCreateAState() throws UnknownHostException {
+    public void itShouldCreateAState() {
         //Given
         when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.save(stateDBObject)).thenReturn(Long.valueOf(1));
+        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(Long.valueOf(1));
         //When
-        State savedState = stateService.save(state);
+        State savedState = stateService.saveOrUpdate(state);
         //Then
         assertNotNull(savedState);
-        verify(mockStateRepository).save(stateDBObject);
+        verify(mockStateRepository).saveOrUpdate(stateDBObject);
     }
 
+    //TODO [SHANTANU] needs mongo connection to test _id field for update
+    @Ignore
     @Test
-    public void itShouldReturnNullIfCannotCreateState() throws UnknownHostException {
+    public void itShouldUpdateAState() {
         //Given
         when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.save(stateDBObject)).thenReturn(null);
+        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(Long.valueOf(1));
         //When
-        State savedState = stateService.save(state);
+        State savedState = stateService.saveOrUpdate(state);
         //Then
-        assertNull(savedState);
-        verify(mockStateRepository).save(stateDBObject);
+        assertNotNull(savedState);
+        verify(mockStateRepository).saveOrUpdate(stateDBObject);
     }
 
     @Test
-    public void itShouldAddActionToState() throws UnknownHostException {
+    public void itShouldReturnNullIfCannotCreateState() {
+        //Given
+        when(state.getDBObject()).thenReturn(stateDBObject);
+        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(null);
+        //When
+        State savedState = stateService.saveOrUpdate(state);
+        //Then
+        assertNull(savedState);
+        verify(mockStateRepository).saveOrUpdate(stateDBObject);
+    }
+
+    @Test
+    public void itShouldAddActionToState() {
         //Given
         state = getDummyState();
         Action action = mock(Action.class);
-        when(mockStateRepository.save(any(DBObject.class))).thenReturn(Long.valueOf(1));
+        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(Long.valueOf(1));
 
         //When
         State stateWithAction = stateService.toStateAddAction(state, action);
@@ -69,11 +81,11 @@ public class StateServiceSpecs {
         //Then
         assertNotNull(stateWithAction);
         assertThat(stateWithAction.getActions().size(), is(1));
-        verify(mockStateRepository).save(any(DBObject.class));
+        verify(mockStateRepository).saveOrUpdate(any(DBObject.class));
     }
 
     @Test
-    public void itShouldJustReturnSameStateIfActionAlreadyExists() throws UnknownHostException {
+    public void itShouldJustReturnSameStateIfActionAlreadyExists() {
         //Given
         Action action = mock(Action.class);
         List<Action> actionList = mock(List.class);
@@ -89,18 +101,18 @@ public class StateServiceSpecs {
 
         verify(state).getActions();
         verify(actionList).contains(action);
-        verify(mockStateRepository, times(0)).save(any(DBObject.class));
+        verify(mockStateRepository, times(0)).saveOrUpdate(any(DBObject.class));
     }
 
     @Test
-    public void itShouldReturnNullIfItCanNotAddActionToState() throws UnknownHostException {
+    public void itShouldReturnNullIfItCanNotAddActionToState() {
         //Given
         Action action = mock(Action.class);
         List<Action> actionList = mock(List.class);
         when(state.getActions()).thenReturn(actionList);
         when(actionList.contains(action)).thenReturn(false);
         when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.save(stateDBObject)).thenReturn(null);
+        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(null);
 
         //When
         State stateWithAction = stateService.toStateAddAction(state, action);
@@ -112,7 +124,7 @@ public class StateServiceSpecs {
         verify(actionList).contains(action);
         verify(state).addAction(action);
         verify(state).getDBObject();
-        verify(mockStateRepository).save(stateDBObject);
+        verify(mockStateRepository).saveOrUpdate(stateDBObject);
     }
 
     private State getDummyState() {
