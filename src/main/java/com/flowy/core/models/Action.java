@@ -14,15 +14,13 @@ public class Action implements IMongoDBObject {
     private String name;
     private String description;
     private State startState;
+    private State endState;
 
-    public Action(String name, String description) {
-        this(name, description, null);
-    }
-
-    public Action(String name, String description, State startState) {
+    public Action(String name, String description, State startState, State endState) {
         this.name = name;
         this.description = description;
         this.startState = startState;
+        this.endState = endState;
     }
 
     public Long getId() {
