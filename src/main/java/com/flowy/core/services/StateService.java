@@ -1,5 +1,6 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
 
@@ -21,5 +22,14 @@ public class StateService implements IStateService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public State toStateAddAction(State state, Action action) throws UnknownHostException {
+        if(!state.getActions().contains(action)) {
+            state.addAction(action);
+            return stateRepository.save(state.getDBObject()) == null ? null : state;
+        }
+        return state;
     }
 }

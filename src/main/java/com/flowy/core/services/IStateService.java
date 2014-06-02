@@ -1,6 +1,9 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
+
+import java.net.UnknownHostException;
 
 /**
  * Created by ssinghal
@@ -10,4 +13,6 @@ import com.flowy.core.models.State;
 public interface IStateService {
 
     public State save(State state);
+
+    public State toStateAddAction(State state, Action action) throws UnknownHostException;
 }
