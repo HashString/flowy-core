@@ -12,9 +12,7 @@ public class StateService implements IStateService {
     }
 
     @Override
-    public State create(String name, Integer position, String description) {
-        State state = new State(name, position, description);
-        Long stateID = stateRepository.save(state);
-        return stateID == null ? null : state;
+    public State save(State state) {
+        return stateRepository.save(state.getDBObject()) == null ? null : state;
     }
 }

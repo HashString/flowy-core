@@ -9,5 +9,5 @@ import com.flowy.core.models.State;
  */
 public interface IStateService {
 
-    public State create(String name, Integer position, String description);
+    public State save(State state);
 }

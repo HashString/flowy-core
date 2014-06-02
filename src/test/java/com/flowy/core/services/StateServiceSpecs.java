@@ -2,53 +2,52 @@ package com.flowy.core.services;
 
 import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
-import com.flowy.core.repos.MongoStateRepository;
+import com.mongodb.DBObject;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class StateServiceSpecs {
 
-    IStateRepository mockStateRepository;
+    private IStateRepository mockStateRepository;
     private IStateService stateService;
+    private State state;
+    private DBObject stateDBObject;
 
     @Before
     public void setUp(){
-        mockStateRepository = mock(MongoStateRepository.class);
+        state = mock(State.class);
+        stateDBObject = mock(DBObject.class);
+        mockStateRepository = mock(IStateRepository.class);
         stateService = new StateService(mockStateRepository);
     }
 
     @Test
     public void itShouldCreateAState(){
         //given
-        String name = "Test State";
-        Integer position = 1;
-        String description = "some description";
-        when(mockStateRepository.save(any(State.class))).thenReturn(Long.valueOf(1));
+        when(state.getDBObject()).thenReturn(stateDBObject);
+        when(mockStateRepository.save(stateDBObject)).thenReturn(Long.valueOf(1));
         //when
-        State state = stateService.create(name, position, description);
+        State savedState = stateService.save(state);
         //then
-        assertNotNull(state);
-        verify(mockStateRepository).save(any(State.class));
+        assertNotNull(savedState);
+        verify(mockStateRepository).save(stateDBObject);
     }
 
     @Test
     public void itShouldReturnNullIfCannotCreateState(){
         //given
-        String name = "Test State";
-        Integer position = 1;
-        String description = "some description";
-        when(mockStateRepository.save(any(State.class))).thenReturn(null);
+        when(state.getDBObject()).thenReturn(stateDBObject);
+        when(mockStateRepository.save(stateDBObject)).thenReturn(null);
         //when
-        State state = stateService.create(name, position, description);
+        State savedState = stateService.save(state);
         //then
-        assertNull(state);
-        verify(mockStateRepository).save(any(State.class));
+        assertNull(savedState);
+        verify(mockStateRepository).save(stateDBObject);
     }
 }
