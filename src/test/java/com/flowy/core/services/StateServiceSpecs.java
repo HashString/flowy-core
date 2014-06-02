@@ -6,6 +6,8 @@ import com.mongodb.DBObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.UnknownHostException;
+
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -28,7 +30,7 @@ public class StateServiceSpecs {
     }
 
     @Test
-    public void itShouldCreateAState(){
+    public void itShouldCreateAState() throws UnknownHostException {
         //given
         when(state.getDBObject()).thenReturn(stateDBObject);
         when(mockStateRepository.save(stateDBObject)).thenReturn(Long.valueOf(1));
@@ -40,7 +42,7 @@ public class StateServiceSpecs {
     }
 
     @Test
-    public void itShouldReturnNullIfCannotCreateState(){
+    public void itShouldReturnNullIfCannotCreateState() throws UnknownHostException {
         //given
         when(state.getDBObject()).thenReturn(stateDBObject);
         when(mockStateRepository.save(stateDBObject)).thenReturn(null);
