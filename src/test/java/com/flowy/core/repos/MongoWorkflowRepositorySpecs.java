@@ -7,8 +7,6 @@ import com.mongodb.WriteResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
@@ -39,7 +37,7 @@ public class MongoWorkflowRepositorySpecs {
     }
 
     @Test
-    public void itShouldSaveAWorkflow() throws UnknownHostException {
+    public void itShouldSaveAWorkflow() {
         //Given
         when(dbCollection.save(workflowDbObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(1);
@@ -56,7 +54,7 @@ public class MongoWorkflowRepositorySpecs {
     }
 
     @Test
-    public void itShouldReturnNullIfCannotSaveAWorkflow() throws UnknownHostException {
+    public void itShouldReturnNullIfCannotSaveAWorkflow() {
         //Given
         when(dbCollection.save(workflowDbObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(0);

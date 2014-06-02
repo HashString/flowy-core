@@ -7,8 +7,6 @@ import com.mongodb.WriteResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
@@ -39,7 +37,7 @@ public class MongoActionRepositorySpecs {
     }
 
     @Test
-    public void itShouldSaveAnAction() throws UnknownHostException {
+    public void itShouldSaveAnAction() {
         //Given
         when(dbCollection.save(actionDbObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(1);
@@ -56,7 +54,7 @@ public class MongoActionRepositorySpecs {
     }
 
     @Test
-    public void itShouldReturnSaveAnAction() throws UnknownHostException {
+    public void itShouldReturnSaveAnAction() {
         //Given
         when(dbCollection.save(actionDbObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(0);

@@ -20,7 +20,7 @@ public class MongoWorkflowRepository implements IWorkflowRepository {
     }
 
     @Override
-    public Long save(DBObject workflowDbObject) throws UnknownHostException {
-        return workflowCollection.save(workflowDbObject).getN() > 0 ? (Long) workflowDbObject.get("id") : null;
+    public Long save(DBObject workflowDBObject) {
+        return workflowCollection.save(workflowDBObject).getN() > 0 ? (Long) workflowDBObject.get("id") : null;
     }
 }

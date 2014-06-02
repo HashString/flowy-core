@@ -35,7 +35,7 @@ public class MongoStateRepositorySpecs {
     }
 
     @Test
-    public void itShouldSaveAState() throws UnknownHostException {
+    public void itShouldSaveAState() {
         //given
         when(dbCollection.save(stateDBObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(1);
@@ -52,7 +52,7 @@ public class MongoStateRepositorySpecs {
     }
 
     @Test
-    public void itShouldReturnNullIfCannotCreateAState() throws UnknownHostException {
+    public void itShouldReturnNullIfCannotCreateAState() {
         //given
         when(dbCollection.save(stateDBObject)).thenReturn(writeResult);
         when(writeResult.getN()).thenReturn(0);

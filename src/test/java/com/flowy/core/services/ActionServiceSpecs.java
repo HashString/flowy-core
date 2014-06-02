@@ -6,13 +6,9 @@ import com.mongodb.DBObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by ssinghal
@@ -31,7 +27,7 @@ public class ActionServiceSpecs {
     }
 
     @Test
-    public void itShouldSaveAnAction() throws UnknownHostException {
+    public void itShouldSaveAnAction() {
         //Given
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);
@@ -48,7 +44,7 @@ public class ActionServiceSpecs {
     }
 
     @Test
-    public void itShouldReturnNullIfItCannotSaveAnAction() throws UnknownHostException {
+    public void itShouldReturnNullIfItCannotSaveAnAction() {
         //Given
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);

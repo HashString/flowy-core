@@ -20,7 +20,7 @@ public class MongoActionRepository implements IActionRepository {
     }
 
     @Override
-    public Long save(DBObject action) throws UnknownHostException {
-        return actionsCollection.save(action).getN() > 0 ? (Long) action.get("id") : null;
+    public Long save(DBObject actionDBObject) {
+        return actionsCollection.save(actionDBObject).getN() > 0 ? (Long) actionDBObject.get("id") : null;
     }
 }

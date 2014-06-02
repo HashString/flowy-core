@@ -3,8 +3,6 @@ package com.flowy.core.services;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
 
-import java.net.UnknownHostException;
-
 /**
  * Created by ssinghal
  * Created on 29-May-2014
@@ -20,11 +18,6 @@ public class WorkflowService implements IWorkflowService {
 
     @Override
     public Workflow save(Workflow workflow) {
-        try {
-            return workflowRepository.save(workflow.getDBObject()) == null ? null : workflow;
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return workflowRepository.save(workflow.getDBObject()) == null ? null : workflow;
     }
 }

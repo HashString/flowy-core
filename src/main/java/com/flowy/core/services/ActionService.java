@@ -3,8 +3,6 @@ package com.flowy.core.services;
 import com.flowy.core.models.Action;
 import com.flowy.core.repos.IActionRepository;
 
-import java.net.UnknownHostException;
-
 /**
  * Created by ssinghal
  * Created on 30-May-2014
@@ -20,11 +18,6 @@ public class ActionService implements IActionService {
 
     @Override
     public Action save(Action action) {
-        try {
-            return actionRepository.save(action.getDBObject()) == null ? null : action;
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return actionRepository.save(action.getDBObject()) == null ? null : action;
     }
 }
