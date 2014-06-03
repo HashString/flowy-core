@@ -3,6 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.Action;
 import com.flowy.core.repos.IActionRepository;
 import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class ActionServiceSpecs {
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);
         when(action.getDBObject()).thenReturn(mockDBObject);
-        when(mockRepository.save(mockDBObject)).thenReturn(Long.valueOf(1));
+        when(mockRepository.saveOrUpdate(mockDBObject)).thenReturn(ObjectId.get());
 
         //When
         Action savedAction = actionService.save(action);
@@ -40,7 +41,7 @@ public class ActionServiceSpecs {
         //Then
         assertNotNull(savedAction);
         verify(action).getDBObject();
-        verify(mockRepository).save(mockDBObject);
+        verify(mockRepository).saveOrUpdate(mockDBObject);
     }
 
     @Test
@@ -49,7 +50,7 @@ public class ActionServiceSpecs {
         Action action = mock(Action.class);
         DBObject mockDBObject = mock(DBObject.class);
         when(action.getDBObject()).thenReturn(mockDBObject);
-        when(mockRepository.save(mockDBObject)).thenReturn(null);
+        when(mockRepository.saveOrUpdate(mockDBObject)).thenReturn(null);
 
         //When
         Action savedAction = actionService.save(action);
@@ -57,6 +58,6 @@ public class ActionServiceSpecs {
         //Then
         assertNull(savedAction);
         verify(action).getDBObject();
-        verify(mockRepository).save(mockDBObject);
+        verify(mockRepository).saveOrUpdate(mockDBObject);
     }
 }

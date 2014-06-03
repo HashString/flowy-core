@@ -3,6 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
 import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class WorkflowServiceSpecs {
     public void itShouldSaveAWorkflow() {
         //Given
         when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.save(workflowDbObject)).thenReturn(Long.valueOf(1));
+        when(workflowRepository.saveOrUpdate(workflowDbObject)).thenReturn(ObjectId.get());
 
         //When
         Workflow savedWorkflow = workflowService.save(workflow);
@@ -42,14 +43,14 @@ public class WorkflowServiceSpecs {
         //Then
         assertNotNull(savedWorkflow);
         verify(workflow).getDBObject();
-        verify(workflowRepository).save(workflowDbObject);
+        verify(workflowRepository).saveOrUpdate(workflowDbObject);
     }
 
     @Test
     public void itShouldReturnNullIfCannotSaveAWorkflow() {
         //Given
         when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.save(workflowDbObject)).thenReturn(null);
+        when(workflowRepository.saveOrUpdate(workflowDbObject)).thenReturn(null);
 
         //When
         Workflow savedWorkflow = workflowService.save(workflow);
@@ -57,6 +58,6 @@ public class WorkflowServiceSpecs {
         //Then
         assertNull(savedWorkflow);
         verify(workflow).getDBObject();
-        verify(workflowRepository).save(workflowDbObject);
+        verify(workflowRepository).saveOrUpdate(workflowDbObject);
     }
 }
