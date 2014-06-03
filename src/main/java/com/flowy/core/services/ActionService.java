@@ -17,7 +17,7 @@ public class ActionService implements IActionService {
     }
 
     @Override
-    public Action save(Action action) {
+    public Action saveOrUpdate(Action action) {
         return actionRepository.saveOrUpdate(action.getDBObject()) == null ? null : action;
     }
 }

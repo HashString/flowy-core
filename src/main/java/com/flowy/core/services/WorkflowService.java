@@ -17,7 +17,7 @@ public class WorkflowService implements IWorkflowService {
     }
 
     @Override
-    public Workflow save(Workflow workflow) {
+    public Workflow saveOrUpdate(Workflow workflow) {
         return workflowRepository.saveOrUpdate(workflow.getDBObject()) == null ? null : workflow;
     }
 }

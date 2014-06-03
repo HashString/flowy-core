@@ -1,7 +1,9 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.Item;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -25,39 +27,38 @@ public class WorkflowServiceSpecs {
 
     @Before
     public void setUp() throws Exception {
-        workflow = mock(Workflow.class);
         workflowDbObject = mock(DBObject.class);
         workflowRepository = mock(IWorkflowRepository.class);
         workflowService = new WorkflowService(workflowRepository);
+
+        Item mockItem = mock(Item.class);
+        when(mockItem.getDBObject()).thenReturn(new BasicDBObject());
+        workflow = new Workflow("workflowName", mockItem, "workflowDescription");
     }
 
     @Test
     public void itShouldSaveAWorkflow() {
         //Given
-        when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.saveOrUpdate(workflowDbObject)).thenReturn(ObjectId.get());
+        when(workflowRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
 
         //When
-        Workflow savedWorkflow = workflowService.save(workflow);
+        Workflow savedWorkflow = workflowService.saveOrUpdate(workflow);
 
         //Then
         assertNotNull(savedWorkflow);
-        verify(workflow).getDBObject();
-        verify(workflowRepository).saveOrUpdate(workflowDbObject);
+        verify(workflowRepository).saveOrUpdate(any(DBObject.class));
     }
 
     @Test
     public void itShouldReturnNullIfCannotSaveAWorkflow() {
         //Given
-        when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.saveOrUpdate(workflowDbObject)).thenReturn(null);
+        when(workflowRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
 
         //When
-        Workflow savedWorkflow = workflowService.save(workflow);
+        Workflow savedWorkflow = workflowService.saveOrUpdate(workflow);
 
         //Then
         assertNull(savedWorkflow);
-        verify(workflow).getDBObject();
-        verify(workflowRepository).saveOrUpdate(workflowDbObject);
+        verify(workflowRepository).saveOrUpdate(any(DBObject.class));
     }
 }

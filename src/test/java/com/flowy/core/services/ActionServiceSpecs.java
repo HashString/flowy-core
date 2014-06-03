@@ -1,7 +1,9 @@
 package com.flowy.core.services;
 
 import com.flowy.core.models.Action;
+import com.flowy.core.models.State;
 import com.flowy.core.repos.IActionRepository;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -18,6 +20,7 @@ import static org.mockito.Mockito.*;
  */
 public class ActionServiceSpecs {
 
+    private Action action;
     private IActionService actionService;
     private IActionRepository mockRepository;
 
@@ -25,39 +28,37 @@ public class ActionServiceSpecs {
     public void setUp() throws Exception {
         mockRepository = mock(IActionRepository.class);
         actionService = new ActionService(mockRepository);
+
+        State mockEndState = mock(State.class);
+        State mockStartState = mock(State.class);
+        when(mockEndState.getDBObject()).thenReturn(new BasicDBObject());
+        when(mockStartState.getDBObject()).thenReturn(new BasicDBObject());
+        action = new Action("actionName", "actionDescription", mockStartState, mockEndState);
     }
 
     @Test
     public void itShouldSaveAnAction() {
         //Given
-        Action action = mock(Action.class);
-        DBObject mockDBObject = mock(DBObject.class);
-        when(action.getDBObject()).thenReturn(mockDBObject);
-        when(mockRepository.saveOrUpdate(mockDBObject)).thenReturn(ObjectId.get());
+        when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
 
         //When
-        Action savedAction = actionService.save(action);
+        Action savedAction = actionService.saveOrUpdate(action);
 
         //Then
         assertNotNull(savedAction);
-        verify(action).getDBObject();
-        verify(mockRepository).saveOrUpdate(mockDBObject);
+        verify(mockRepository).saveOrUpdate(any(DBObject.class));
     }
 
     @Test
     public void itShouldReturnNullIfItCannotSaveAnAction() {
         //Given
-        Action action = mock(Action.class);
-        DBObject mockDBObject = mock(DBObject.class);
-        when(action.getDBObject()).thenReturn(mockDBObject);
-        when(mockRepository.saveOrUpdate(mockDBObject)).thenReturn(null);
+        when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
 
         //When
-        Action savedAction = actionService.save(action);
+        Action savedAction = actionService.saveOrUpdate(action);
 
         //Then
         assertNull(savedAction);
-        verify(action).getDBObject();
-        verify(mockRepository).saveOrUpdate(mockDBObject);
+        verify(mockRepository).saveOrUpdate(any(DBObject.class));
     }
 }
