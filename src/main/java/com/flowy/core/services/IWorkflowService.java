@@ -8,5 +8,5 @@ import com.flowy.core.models.Workflow;
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
 public interface IWorkflowService {
-    Workflow save(Workflow workflow);
+    Workflow saveOrUpdate(Workflow workflow);
 }

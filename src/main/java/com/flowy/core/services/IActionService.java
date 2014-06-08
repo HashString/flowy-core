@@ -9,5 +9,5 @@ import com.flowy.core.models.Action;
  */
 public interface IActionService {
 
-    public Action save(Action action);
+    public Action saveOrUpdate(Action action);
 }

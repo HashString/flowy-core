@@ -1,21 +1,16 @@
 package com.flowy.core.repos;
 
+import com.flowy.core.util.ConfigHandler;
 import com.flowy.core.util.ConnectionFactory;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
-public class MongoStateRepository implements IStateRepository{
+public class MongoStateRepository extends BaseRepository implements IStateRepository {
 
-    private DBCollection stateCollection;
+    private static final String COLLECTION_NAME = ConfigHandler.get("mongo.repo.state");
 
     public MongoStateRepository(ConnectionFactory connectionFactory) throws UnknownHostException {
-        stateCollection = connectionFactory.getCollection(DB_NAME, COLLECTION_NAME);
+        super(connectionFactory, COLLECTION_NAME);
     }
 
-    @Override
-    public Long saveOrUpdate(DBObject stateDBObject) {
-        return stateCollection.save(stateDBObject).getN() > 0 ? (Long) stateDBObject.get("id") : null;
-    }
 }

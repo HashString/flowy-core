@@ -1,8 +1,7 @@
 package com.flowy.core.repos;
 
+import com.flowy.core.util.ConfigHandler;
 import com.flowy.core.util.ConnectionFactory;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
@@ -11,16 +10,11 @@ import java.net.UnknownHostException;
  * Created on 30-May-2014
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
-public class MongoActionRepository implements IActionRepository {
+public class MongoActionRepository extends BaseRepository implements IActionRepository {
 
-    private final DBCollection actionsCollection;
+    private static final String COLLECTION_NAME = ConfigHandler.get("mongo.repo.action");
 
     public MongoActionRepository(ConnectionFactory connectionFactory) throws UnknownHostException {
-        actionsCollection = connectionFactory.getCollection(DB_NAME, COLLECTION_NAME);
-    }
-
-    @Override
-    public Long save(DBObject actionDBObject) {
-        return actionsCollection.save(actionDBObject).getN() > 0 ? (Long) actionDBObject.get("id") : null;
+        super(connectionFactory, COLLECTION_NAME);
     }
 }

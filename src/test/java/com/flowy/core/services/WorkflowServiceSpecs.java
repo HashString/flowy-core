@@ -3,6 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
 import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,39 +25,38 @@ public class WorkflowServiceSpecs {
 
     @Before
     public void setUp() throws Exception {
-        workflow = mock(Workflow.class);
         workflowDbObject = mock(DBObject.class);
         workflowRepository = mock(IWorkflowRepository.class);
         workflowService = new WorkflowService(workflowRepository);
+        workflow = new Workflow("workflowName", "workflowDescription");
     }
 
     @Test
     public void itShouldSaveAWorkflow() {
         //Given
-        when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.save(workflowDbObject)).thenReturn(Long.valueOf(1));
+        when(workflowRepository.saveOrUpdate(workflow.getDBObject())).thenReturn(ObjectId.get());
+        assertNull(workflow.getId());
 
         //When
-        Workflow savedWorkflow = workflowService.save(workflow);
+        workflowService.saveOrUpdate(workflow);
 
         //Then
-        assertNotNull(savedWorkflow);
-        verify(workflow).getDBObject();
-        verify(workflowRepository).save(workflowDbObject);
+        assertNotNull(workflow);
+        assertNotNull(workflow.getId());
+        verify(workflowRepository).saveOrUpdate(workflow.getDBObject());
     }
 
     @Test
     public void itShouldReturnNullIfCannotSaveAWorkflow() {
         //Given
-        when(workflow.getDBObject()).thenReturn(workflowDbObject);
-        when(workflowRepository.save(workflowDbObject)).thenReturn(null);
+        when(workflowRepository.saveOrUpdate(workflow.getDBObject())).thenReturn(null);
+        assertNull(workflow.getId());
 
         //When
-        Workflow savedWorkflow = workflowService.save(workflow);
+        workflowService.saveOrUpdate(workflow);
 
         //Then
-        assertNull(savedWorkflow);
-        verify(workflow).getDBObject();
-        verify(workflowRepository).save(workflowDbObject);
+        assertNull(workflow.getId());
+        verify(workflowRepository).saveOrUpdate(workflow.getDBObject());
     }
 }

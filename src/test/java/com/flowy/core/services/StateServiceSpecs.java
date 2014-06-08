@@ -4,13 +4,14 @@ import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
 import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
@@ -18,62 +19,50 @@ import static org.mockito.Mockito.*;
 public class StateServiceSpecs {
 
     private State state;
-    private DBObject stateDBObject;
+    private final Action action = mock(Action.class);
     private IStateRepository mockStateRepository;
     private IStateService stateService;
 
     @Before
-    public void setUp(){
-        state = mock(State.class);
-        stateDBObject = mock(DBObject.class);
+    public void setUp() {
         mockStateRepository = mock(IStateRepository.class);
         stateService = new StateService(mockStateRepository);
+        state = new State("someName", "someDescription");
     }
 
     @Test
-    public void itShouldCreateAState() {
+    public void itShouldCreateOrUpdateState() {
         //Given
-        when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(Long.valueOf(1));
-        //When
-        State savedState = stateService.saveOrUpdate(state);
-        //Then
-        assertNotNull(savedState);
-        verify(mockStateRepository).saveOrUpdate(stateDBObject);
-    }
+        when(mockStateRepository.saveOrUpdate(state.getDBObject())).thenReturn(ObjectId.get());
+        assertNull(state.getId());
 
-    //TODO [SHANTANU] needs mongo connection to test _id field for update
-    @Ignore
-    @Test
-    public void itShouldUpdateAState() {
-        //Given
-        when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(Long.valueOf(1));
         //When
-        State savedState = stateService.saveOrUpdate(state);
+        stateService.saveOrUpdate(state);
+
         //Then
-        assertNotNull(savedState);
-        verify(mockStateRepository).saveOrUpdate(stateDBObject);
+        assertNotNull(state);
+        assertNotNull(state.getId());
+        verify(mockStateRepository).saveOrUpdate(state.getDBObject());
     }
 
     @Test
-    public void itShouldReturnNullIfCannotCreateState() {
+    public void itShouldReturnNullIfCannotCreateOrUpdateState() {
         //Given
-        when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(null);
+        when(mockStateRepository.saveOrUpdate(state.getDBObject())).thenReturn(null);
+        assertNull(state.getId());
+
         //When
-        State savedState = stateService.saveOrUpdate(state);
+        stateService.saveOrUpdate(state);
+
         //Then
-        assertNull(savedState);
-        verify(mockStateRepository).saveOrUpdate(stateDBObject);
+        assertNull(state.getId());
+        verify(mockStateRepository).saveOrUpdate(state.getDBObject());
     }
 
     @Test
     public void itShouldAddActionToState() {
         //Given
-        state = getDummyState();
-        Action action = mock(Action.class);
-        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(Long.valueOf(1));
+        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
 
         //When
         State stateWithAction = stateService.toStateAddAction(state, action);
@@ -85,49 +74,32 @@ public class StateServiceSpecs {
     }
 
     @Test
-    public void itShouldJustReturnSameStateIfActionAlreadyExists() {
+    public void itShouldNotUpdateDatabaseIfActionAlreadyExists() {
         //Given
-        Action action = mock(Action.class);
-        List<Action> actionList = mock(List.class);
-        when(state.getActions()).thenReturn(actionList);
-        when(actionList.contains(action)).thenReturn(true);
+        state = mock(State.class);
+        when(state.getActions()).thenReturn(new ArrayList<Action>() {{
+            add(action);
+        }});
 
         //When
         State stateWithAction = stateService.toStateAddAction(state, action);
 
         //Then
         assertNotNull(stateWithAction);
-        assertEquals(stateWithAction, state);
-
-        verify(state).getActions();
-        verify(actionList).contains(action);
         verify(mockStateRepository, times(0)).saveOrUpdate(any(DBObject.class));
     }
 
     @Test
     public void itShouldReturnNullIfItCanNotAddActionToState() {
         //Given
-        Action action = mock(Action.class);
-        List<Action> actionList = mock(List.class);
-        when(state.getActions()).thenReturn(actionList);
-        when(actionList.contains(action)).thenReturn(false);
-        when(state.getDBObject()).thenReturn(stateDBObject);
-        when(mockStateRepository.saveOrUpdate(stateDBObject)).thenReturn(null);
+        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
 
         //When
         State stateWithAction = stateService.toStateAddAction(state, action);
 
         //Then
         assertNull(stateWithAction);
-
-        verify(state).getActions();
-        verify(actionList).contains(action);
-        verify(state).addAction(action);
-        verify(state).getDBObject();
-        verify(mockStateRepository).saveOrUpdate(stateDBObject);
+        verify(mockStateRepository).saveOrUpdate(any(DBObject.class));
     }
 
-    private State getDummyState() {
-        return new State("someName", Integer.MIN_VALUE, "someDescription");
-    }
 }

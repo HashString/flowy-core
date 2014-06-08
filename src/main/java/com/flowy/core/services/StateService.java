@@ -3,6 +3,7 @@ package com.flowy.core.services;
 import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
 import com.flowy.core.repos.IStateRepository;
+import org.bson.types.ObjectId;
 
 public class StateService implements IStateService {
 
@@ -14,7 +15,10 @@ public class StateService implements IStateService {
 
     @Override
     public State saveOrUpdate(State state) {
-        return stateRepository.saveOrUpdate(state.getDBObject()) == null ? null : state;
+        ObjectId objectId = stateRepository.saveOrUpdate(state.getDBObject());
+        if(objectId != null)
+            state.setId(objectId.toString());
+        return objectId == null ? null : state;
     }
 
     @Override
