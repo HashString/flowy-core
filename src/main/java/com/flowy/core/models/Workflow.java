@@ -10,27 +10,29 @@ import com.mongodb.DBObject;
  */
 public class Workflow implements IMongoDBObject{
 
-    private Long id;
+    private String id;
     private String name;
-    private Item manages;
     private String description;
 
-    public Workflow(String name, Item manages, String description) {
+    public Workflow(String name) {
         this.name = name;
-        this.manages = manages;
+    }
+
+    public Workflow(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public Item getManages() {
-        return manages;
     }
 
     public String getDescription() {
@@ -41,8 +43,7 @@ public class Workflow implements IMongoDBObject{
     public DBObject getDBObject() {
         BasicDBObject basicDBObject = new BasicDBObject()
                 .append("name", this.getName())
-                .append("description", this.getDescription())
-                .append("manages", this.getManages().getDBObject());
+                .append("description", this.getDescription());
         return basicDBObject;
     }
 }

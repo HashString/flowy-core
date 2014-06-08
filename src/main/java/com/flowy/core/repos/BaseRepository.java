@@ -21,8 +21,7 @@ public class BaseRepository implements IRepository {
     }
 
     @Override
-    //TODO [SHANTANU] find a better way of checking for write success
-    public ObjectId saveOrUpdate(DBObject dBObject) {
-        return collection.save(dBObject).getError() == null ? (ObjectId) dBObject.get("_id") : null;
+    public ObjectId saveOrUpdate(DBObject dbObject) {
+        return collection.save(dbObject).getError() == null ? (ObjectId) dbObject.get("_id") : null;
     }
 }

@@ -10,5 +10,5 @@ import org.bson.types.ObjectId;
  */
 public interface IRepository {
 
-    public ObjectId saveOrUpdate(DBObject actionDBObject);
+    public ObjectId saveOrUpdate(DBObject dbObject);
 }

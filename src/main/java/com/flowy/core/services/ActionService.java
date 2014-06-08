@@ -2,6 +2,7 @@ package com.flowy.core.services;
 
 import com.flowy.core.models.Action;
 import com.flowy.core.repos.IActionRepository;
+import org.bson.types.ObjectId;
 
 /**
  * Created by ssinghal
@@ -18,6 +19,9 @@ public class ActionService implements IActionService {
 
     @Override
     public Action saveOrUpdate(Action action) {
-        return actionRepository.saveOrUpdate(action.getDBObject()) == null ? null : action;
+        ObjectId objectId = actionRepository.saveOrUpdate(action.getDBObject());
+        if(objectId != null)
+            action.setId(objectId.toString());
+        return objectId == null ? null : action;
     }
 }

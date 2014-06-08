@@ -34,33 +34,33 @@ public class BaseRepositorySpecs {
     private static final String COLLECTION_NAME = ConfigHandler.get("mongo.repo.action");
 
     @Before
-    //TODO [SHANTANU] start thinking about cleaning up the database
     public void setUp() throws Exception {
         writeResult = mock(WriteResult.class);
         dbCollection = mock(DBCollection.class);
-        connectionFactory = new ConnectionFactory();
-        dbObject = new BasicDBObject().append("basic", "test");
+        connectionFactory = mock(ConnectionFactory.class);
+        when(connectionFactory.getCollection(COLLECTION_NAME)).thenReturn(dbCollection);
         repository = new BaseRepository(connectionFactory, COLLECTION_NAME);
+
+        dbObject = new BasicDBObject().append("_id", ObjectId.get()).append("basic", "test");
     }
 
     @Test
-    public void itShouldSaveAnObject() {
+    public void itShouldSaveAnObject() throws UnknownHostException {
         //Given
-        assertNull(dbObject.get("_id"));
+        when(dbCollection.save(dbObject)).thenReturn(writeResult);
+        when(writeResult.getError()).thenReturn(null);
         //When
         ObjectId id = repository.saveOrUpdate(dbObject);
         //Then
         assertNotNull(id);
         assertThat(dbObject.get("_id"), Is.<Object>is(id));
+        verify(dbCollection).save(dbObject);
+        verify(writeResult).getError();
     }
 
     @Test
-    public void itShouldReturnSaveAnObject() throws UnknownHostException {
+    public void itShouldReturnNullIfItCanNotSaveAnObject() throws UnknownHostException {
         //Given
-        connectionFactory = mock(ConnectionFactory.class);
-        when(connectionFactory.getCollection(COLLECTION_NAME)).thenReturn(dbCollection);
-
-        repository = new MongoActionRepository(connectionFactory);
         when(dbCollection.save(dbObject)).thenReturn(writeResult);
         when(writeResult.getError()).thenReturn("dummy error");
 
@@ -73,15 +73,4 @@ public class BaseRepositorySpecs {
         verify(writeResult).getError();
     }
 
-    @Test
-    public void itShouldUpdateAnObject() {
-        //Given
-        ObjectId oldId = repository.saveOrUpdate(dbObject);
-        //When
-        dbObject.put("update", "test");
-        ObjectId updatedId = repository.saveOrUpdate(dbObject);
-        //Then
-        assertNotNull(updatedId);
-        assertThat(updatedId, Is.<Object>is(oldId));
-    }
 }

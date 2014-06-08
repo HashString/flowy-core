@@ -9,21 +9,26 @@ import java.util.List;
 
 public class State implements IMongoDBObject{
 
-    private Long id;
+    private String id;
     private String name;
-    private Integer position;
     private String description;
-    private List<Action> actions;
+    private List<Action> actions = new ArrayList<Action>();
 
-    public State(String name, Integer position, String description) {
+    public State(String name) {
         this.name = name;
-        this.position = position;
-        this.description = description;
-        this.actions = new ArrayList<Action>();
     }
 
-    public Integer getPosition() {
-        return position;
+    public State(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,15 +39,10 @@ public class State implements IMongoDBObject{
         return description;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     @Override
     public DBObject getDBObject() {
         BasicDBObject basicDBObject = new BasicDBObject()
                 .append("name", this.getName())
-                .append("position", this.getPosition())
                 .append("description", this.getDescription());
         return basicDBObject;
     }

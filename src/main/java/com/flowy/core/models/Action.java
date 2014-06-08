@@ -10,21 +10,25 @@ import com.mongodb.DBObject;
  */
 public class Action implements IMongoDBObject {
 
-    private Long id;
+    private String id;
     private String name;
     private String description;
-    private State startState;
-    private State endState;
 
-    public Action(String name, String description, State startState, State endState) {
+    public Action(String name) {
         this.name = name;
-        this.description = description;
-        this.startState = startState;
-        this.endState = endState;
     }
 
-    public Long getId() {
+    public Action(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -35,16 +39,10 @@ public class Action implements IMongoDBObject {
         return description;
     }
 
-    public State getStartState() {
-        return startState;
-    }
-
     @Override
     public DBObject getDBObject() {
         return new BasicDBObject()
                 .append("id", getId())
-                .append("name", getName())
-                .append("startState", getStartState().getDBObject())
-                .append("description", getDescription());
+                .append("name", getName());
     }
 }

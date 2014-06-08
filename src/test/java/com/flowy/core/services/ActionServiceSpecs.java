@@ -1,9 +1,7 @@
 package com.flowy.core.services;
 
 import com.flowy.core.models.Action;
-import com.flowy.core.models.State;
 import com.flowy.core.repos.IActionRepository;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -28,24 +26,21 @@ public class ActionServiceSpecs {
     public void setUp() throws Exception {
         mockRepository = mock(IActionRepository.class);
         actionService = new ActionService(mockRepository);
-
-        State mockEndState = mock(State.class);
-        State mockStartState = mock(State.class);
-        when(mockEndState.getDBObject()).thenReturn(new BasicDBObject());
-        when(mockStartState.getDBObject()).thenReturn(new BasicDBObject());
-        action = new Action("actionName", "actionDescription", mockStartState, mockEndState);
+        action = new Action("actionName", "actionDescription");
     }
 
     @Test
     public void itShouldSaveAnAction() {
         //Given
         when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
+        assertNull(action.getId());
 
         //When
-        Action savedAction = actionService.saveOrUpdate(action);
+        actionService.saveOrUpdate(action);
 
         //Then
-        assertNotNull(savedAction);
+        assertNotNull(action);
+        assertNotNull(action.getId());
         verify(mockRepository).saveOrUpdate(any(DBObject.class));
     }
 
@@ -53,12 +48,13 @@ public class ActionServiceSpecs {
     public void itShouldReturnNullIfItCannotSaveAnAction() {
         //Given
         when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
+        assertNull(action.getId());
 
         //When
-        Action savedAction = actionService.saveOrUpdate(action);
+        actionService.saveOrUpdate(action);
 
         //Then
-        assertNull(savedAction);
+        assertNull(action.getId());
         verify(mockRepository).saveOrUpdate(any(DBObject.class));
     }
 }

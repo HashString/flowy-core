@@ -27,33 +27,36 @@ public class StateServiceSpecs {
     public void setUp() {
         mockStateRepository = mock(IStateRepository.class);
         stateService = new StateService(mockStateRepository);
-        state = new State("someName", Integer.MIN_VALUE, "someDescription");
+        state = new State("someName", "someDescription");
     }
 
     @Test
     public void itShouldCreateOrUpdateState() {
         //Given
-        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
+        when(mockStateRepository.saveOrUpdate(state.getDBObject())).thenReturn(ObjectId.get());
+        assertNull(state.getId());
 
         //When
-        State savedState = stateService.saveOrUpdate(state);
+        stateService.saveOrUpdate(state);
 
         //Then
-        assertNotNull(savedState);
-        verify(mockStateRepository).saveOrUpdate(any(DBObject.class));
+        assertNotNull(state);
+        assertNotNull(state.getId());
+        verify(mockStateRepository).saveOrUpdate(state.getDBObject());
     }
 
     @Test
     public void itShouldReturnNullIfCannotCreateOrUpdateState() {
         //Given
-        when(mockStateRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
+        when(mockStateRepository.saveOrUpdate(state.getDBObject())).thenReturn(null);
+        assertNull(state.getId());
 
         //When
-        State savedState = stateService.saveOrUpdate(state);
+        stateService.saveOrUpdate(state);
 
         //Then
-        assertNull(savedState);
-        verify(mockStateRepository).saveOrUpdate(any(DBObject.class));
+        assertNull(state.getId());
+        verify(mockStateRepository).saveOrUpdate(state.getDBObject());
     }
 
     @Test
