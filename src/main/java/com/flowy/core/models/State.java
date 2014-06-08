@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class State implements IMongoDBObject{
+public class State {
 
     private String id;
     private String name;
@@ -37,14 +37,6 @@ public class State implements IMongoDBObject{
 
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public DBObject getDBObject() {
-        BasicDBObject basicDBObject = new BasicDBObject()
-                .append("name", this.getName())
-                .append("description", this.getDescription());
-        return basicDBObject;
     }
 
     public void addAction(Action action) {

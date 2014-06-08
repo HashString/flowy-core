@@ -1,14 +1,14 @@
 package com.flowy.core.repos;
 
+import com.flowy.core.models.Workflow;
 import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
 
 /**
  * Created by ssinghal
  * Created on 29-May-2014
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
-public interface IWorkflowRepository extends IRepository {
+public interface IWorkflowRepository extends IRepository<Workflow, String> {
 
     /**
      * The saveOrUpdate() method uses either the <b>Insert</b> or the <b>Update</b> command, which use the default write concern.
@@ -27,5 +27,5 @@ public interface IWorkflowRepository extends IRepository {
      * @return  <tt>_id</tt> of the workflowDBObject
      */
     @Override
-    public ObjectId saveOrUpdate(DBObject workflowDBObject);
+    public Workflow saveOrUpdate(Workflow workflow);
 }

@@ -1,8 +1,8 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.State;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
-import org.bson.types.ObjectId;
 
 /**
  * Created by ssinghal
@@ -19,9 +19,13 @@ public class WorkflowService implements IWorkflowService {
 
     @Override
     public Workflow saveOrUpdate(Workflow workflow) {
-        ObjectId objectId = workflowRepository.saveOrUpdate(workflow.getDBObject());
-        if(objectId != null)
-            workflow.setId(objectId.toString());
-        return objectId == null ? null : workflow;
+        return workflowRepository.saveOrUpdate(workflow);
+    }
+
+    @Override
+    public Workflow addState(Workflow workflow, State state) {
+        workflow.addState(state);
+        workflowRepository.saveOrUpdate(workflow);
+        return workflow;
     }
 }

@@ -2,6 +2,8 @@ package com.flowy.core.util;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import java.net.UnknownHostException;
 
@@ -12,23 +14,6 @@ import java.net.UnknownHostException;
  */
 public class TestUtil {
 
-    private static DB db;
-    private static ConnectionFactory connectionFactory;
+    MongoOperations mongoOperations;
 
-    static {
-        String hostName = ConfigHandler.get("mongo.local.host_name");
-        String dbName = ConfigHandler.get("mongo.local.database_name");
-        int port = Integer.parseInt(ConfigHandler.get("mongo.local.port"));
-
-        try {
-            connectionFactory = new ConnectionFactory();
-            db = new MongoClient(hostName, port).getDB(dbName);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void dropCollection(String collectionName) {
-        db.getCollection(collectionName).drop();
-    }
 }

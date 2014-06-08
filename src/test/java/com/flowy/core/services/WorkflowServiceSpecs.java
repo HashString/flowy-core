@@ -1,15 +1,15 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.State;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
-import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by ssinghal
@@ -19,44 +19,35 @@ import static org.mockito.Mockito.*;
 public class WorkflowServiceSpecs {
 
     private Workflow workflow;
-    private DBObject workflowDbObject;
-    private IWorkflowRepository workflowRepository;
     private IWorkflowService workflowService;
+    private IWorkflowRepository workflowRepository;
 
     @Before
     public void setUp() throws Exception {
-        workflowDbObject = mock(DBObject.class);
         workflowRepository = mock(IWorkflowRepository.class);
         workflowService = new WorkflowService(workflowRepository);
         workflow = new Workflow("workflowName", "workflowDescription");
     }
 
     @Test
-    public void itShouldSaveAWorkflow() {
-        //Given
-        when(workflowRepository.saveOrUpdate(workflow.getDBObject())).thenReturn(ObjectId.get());
-        assertNull(workflow.getId());
-
+    public void itShouldSaveOrUpdateAWorkflow() {
         //When
         workflowService.saveOrUpdate(workflow);
 
         //Then
-        assertNotNull(workflow);
-        assertNotNull(workflow.getId());
-        verify(workflowRepository).saveOrUpdate(workflow.getDBObject());
+        verify(workflowRepository).saveOrUpdate(workflow);
     }
 
     @Test
-    public void itShouldReturnNullIfCannotSaveAWorkflow() {
+    public void itShouldAddStateToWorkflow() {
         //Given
-        when(workflowRepository.saveOrUpdate(workflow.getDBObject())).thenReturn(null);
-        assertNull(workflow.getId());
+        State state = new State("state name");
 
         //When
-        workflowService.saveOrUpdate(workflow);
+        workflowService.addState(workflow, state);
 
         //Then
-        assertNull(workflow.getId());
-        verify(workflowRepository).saveOrUpdate(workflow.getDBObject());
+        assertThat(workflow.getStates().size(), is(1));
+        assertThat(workflow.getStates().get(0), is(state));
     }
 }

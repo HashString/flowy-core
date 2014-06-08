@@ -2,14 +2,11 @@ package com.flowy.core.services;
 
 import com.flowy.core.models.Action;
 import com.flowy.core.repos.IActionRepository;
-import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by ssinghal
@@ -30,31 +27,11 @@ public class ActionServiceSpecs {
     }
 
     @Test
-    public void itShouldSaveAnAction() {
-        //Given
-        when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(ObjectId.get());
-        assertNull(action.getId());
-
+    public void itShouldSaveOrUpdateAnAction() {
         //When
         actionService.saveOrUpdate(action);
 
         //Then
-        assertNotNull(action);
-        assertNotNull(action.getId());
-        verify(mockRepository).saveOrUpdate(any(DBObject.class));
-    }
-
-    @Test
-    public void itShouldReturnNullIfItCannotSaveAnAction() {
-        //Given
-        when(mockRepository.saveOrUpdate(any(DBObject.class))).thenReturn(null);
-        assertNull(action.getId());
-
-        //When
-        actionService.saveOrUpdate(action);
-
-        //Then
-        assertNull(action.getId());
-        verify(mockRepository).saveOrUpdate(any(DBObject.class));
+        verify(mockRepository).saveOrUpdate(action);
     }
 }

@@ -8,7 +8,7 @@ import com.mongodb.DBObject;
  * Created on 30-May-2014
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
-public class Action implements IMongoDBObject {
+public class Action {
 
     private String id;
     private String name;
@@ -37,12 +37,5 @@ public class Action implements IMongoDBObject {
 
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public DBObject getDBObject() {
-        return new BasicDBObject()
-                .append("id", getId())
-                .append("name", getName());
     }
 }

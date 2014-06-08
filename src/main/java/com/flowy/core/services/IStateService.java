@@ -9,8 +9,5 @@ import com.flowy.core.models.State;
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
 public interface IStateService {
-
     public State saveOrUpdate(State state);
-
-    public State toStateAddAction(State state, Action action);
 }

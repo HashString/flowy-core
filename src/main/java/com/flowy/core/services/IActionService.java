@@ -8,6 +8,5 @@ import com.flowy.core.models.Action;
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
 public interface IActionService {
-
     public Action saveOrUpdate(Action action);
 }

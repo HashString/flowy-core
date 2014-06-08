@@ -1,9 +1,8 @@
 package com.flowy.core.repos;
 
-import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
+import com.flowy.core.models.State;
 
-public interface IStateRepository extends IRepository {
+public interface IStateRepository extends IRepository<State, String> {
 
     /**
      * The saveOrUpdate() method uses either the <b>Insert</b> or the <b>Update</b> command, which use the default write concern.
@@ -23,5 +22,5 @@ public interface IStateRepository extends IRepository {
      * @return  <tt>_id</tt> of the stateDBObject
      */
     @Override
-    public ObjectId saveOrUpdate(DBObject stateDBObject);
+    public State saveOrUpdate(State state);
 }

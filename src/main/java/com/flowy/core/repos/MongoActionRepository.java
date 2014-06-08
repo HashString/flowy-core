@@ -1,20 +1,16 @@
 package com.flowy.core.repos;
 
-import com.flowy.core.util.ConfigHandler;
-import com.flowy.core.util.ConnectionFactory;
-
-import java.net.UnknownHostException;
+import com.flowy.core.models.Action;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 /**
  * Created by ssinghal
  * Created on 30-May-2014
  * If you refactor this code, remember: Code so clean you could eat off it!
  */
-public class MongoActionRepository extends BaseRepository implements IActionRepository {
+public class MongoActionRepository extends BaseRepository<Action, String> implements IActionRepository {
 
-    private static final String COLLECTION_NAME = ConfigHandler.get("mongo.repo.action");
-
-    public MongoActionRepository(ConnectionFactory connectionFactory) throws UnknownHostException {
-        super(connectionFactory, COLLECTION_NAME);
+    public MongoActionRepository(MongoOperations mongoOperations) {
+        super(mongoOperations);
     }
 }
