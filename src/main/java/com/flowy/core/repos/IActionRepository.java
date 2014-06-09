@@ -23,7 +23,7 @@ public interface IActionRepository extends IRepository<Action, String> {
      * </p>
      *
      *
-     * @param   actionDBObject database object representation of the action entity that will be persisted
+     * @param   action the action entity that will be persisted
      * @return  <tt>_id</tt> of the actionDBObject
      */
     @Override

@@ -1,5 +1,6 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
 import com.flowy.core.models.Workflow;
 import com.flowy.core.repos.IWorkflowRepository;
@@ -49,5 +50,33 @@ public class WorkflowServiceSpecs {
         //Then
         assertThat(workflow.getStates().size(), is(1));
         assertThat(workflow.getStates().get(0), is(state));
+    }
+
+    @Test
+    public void itShouldAddValidActionToWorkflow() {
+        //Given
+        Action action = new Action("action name");
+        action.setStartState(new State("start state"));
+        action.setEndState(new State("end state"));
+
+        //When
+        workflowService.addAction(workflow, action);
+
+        //Then
+        assertThat(workflow.getActions().size(), is(1));
+        assertThat(workflow.getActions().get(0), is(action));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void itShouldNotAddInvalidActionToWorkflow() {
+        //Given
+        Action action = new Action("action name");
+
+        //When
+        workflowService.addAction(workflow, action);
+
+        //Then
+        assertThat(workflow.getActions().size(), is(1));
+        assertThat(workflow.getActions().get(0), is(action));
     }
 }

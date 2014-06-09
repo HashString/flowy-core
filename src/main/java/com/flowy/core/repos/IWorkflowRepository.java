@@ -1,7 +1,6 @@
 package com.flowy.core.repos;
 
 import com.flowy.core.models.Workflow;
-import com.mongodb.DBObject;
 
 /**
  * Created by ssinghal
@@ -23,7 +22,7 @@ public interface IWorkflowRepository extends IRepository<Workflow, String> {
      * saveOrUpdate() method calls the update() method with the upsert option and a query on the _id field if the workflowDBObject contain an _id field.
      * </p>
      *
-     * @param   workflowDBObject database object representation of the workflow entity that will be persisted
+     * @param   workflow the workflow entity that will be persisted
      * @return  <tt>_id</tt> of the workflowDBObject
      */
     @Override

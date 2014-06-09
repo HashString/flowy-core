@@ -21,6 +21,7 @@ public class Workflow {
     private String name;
     private String description;
     private List<State> states = new ArrayList<State>();
+    private List<Action> actions = new ArrayList<Action>();
 
     public Workflow(String name) {
         this.name = name;
@@ -51,7 +52,15 @@ public class Workflow {
         states.add(state);
     }
 
+    public void addAction(Action action) {
+        actions.add(action);
+    }
+
     public List<State> getStates() {
         return states;
+    }
+
+    public List<Action> getActions() {
+        return actions;
     }
 }

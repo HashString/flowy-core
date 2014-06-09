@@ -18,7 +18,7 @@ public interface IStateRepository extends IRepository<State, String> {
      * </p>
      *
      *
-     * @param   stateDBObject database object representation of the state entity that will be persisted
+     * @param   state the state entity that will be persisted
      * @return  <tt>_id</tt> of the stateDBObject
      */
     @Override

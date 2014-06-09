@@ -1,8 +1,5 @@
 package com.flowy.core.models;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
 /**
  * Created by ssinghal
  * Created on 30-May-2014
@@ -13,6 +10,8 @@ public class Action {
     private String id;
     private String name;
     private String description;
+    private State startState;
+    private State endState;
 
     public Action(String name) {
         this.name = name;
@@ -37,5 +36,25 @@ public class Action {
 
     public String getDescription() {
         return description;
+    }
+
+    public State getStartState() {
+        return startState;
+    }
+
+    public void setStartState(State startState) {
+        this.startState = startState;
+    }
+
+    public State getEndState() {
+        return endState;
+    }
+
+    public void setEndState(State endState) {
+        this.endState = endState;
+    }
+
+    public boolean isValid() {
+        return startState != null && endState != null;
     }
 }

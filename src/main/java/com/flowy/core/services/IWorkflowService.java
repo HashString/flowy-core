@@ -1,5 +1,6 @@
 package com.flowy.core.services;
 
+import com.flowy.core.models.Action;
 import com.flowy.core.models.State;
 import com.flowy.core.models.Workflow;
 
@@ -11,4 +12,5 @@ import com.flowy.core.models.Workflow;
 public interface IWorkflowService {
     Workflow saveOrUpdate(Workflow workflow);
     Workflow addState(Workflow workflow, State state);
+    Workflow addAction(Workflow workflow, Action state);
 }
