@@ -11,6 +11,11 @@ before_script:
 
 script: mvn install
 
+after_success:
+  - mvn clean cobertura:cobertura coveralls:cobertura
+
 notifications:
   email:
     recipients: shantanusinghal2709@gmail.com
+    recipients: anuraag.1988@gmail.com
+    recipients: samridhi17@gmail.com
