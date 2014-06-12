@@ -42,7 +42,7 @@ public class BaseRepositorySpecs {
         //When
         repository.saveOrUpdate(workflow);
         //Then
-        assertNull(workflow);
+        assertNotNull(workflow);
         assertNotNull(workflow.getId());
     }
 
